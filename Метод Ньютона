@@ -1,0 +1,58 @@
+#include <iostream>
+#include <windows.h>
+#include <cmath>
+using namespace std;
+
+float f(float x) //возвращает значение функции
+{
+	return pow(x, 3)-3*x-1;
+}
+
+float df(float x) //возвращает значение производной
+{
+	return 3*x-3;
+}
+
+float d2f(float x) // значение второй производной
+{
+	return 3;
+}
+void Newton(float a, float b, float e)
+{
+	float xn;
+	int i=0;
+	if (f(a)*d2f(a)>0)
+		xn = a; // для выбора начальной точки проверяем f(x0)*d2f(x0)>0 ?
+	else
+		xn = b;
+	xn = xn - f(xn) / df(xn); // считаем первое приближение
+	cout << "0-ое приближение = " << xn << endl;
+	cout << "Точность = " << fabs(xn) << endl;
+	while (fabs(xn) > e) // пока не достигнем необходимой точности, будет продолжать вычислять
+	{
+		cout << ++i << " итерация = " << xn << endl;
+		xn = xn - f(xn) / df(xn); // непосредственно формула Ньютона
+		cout << "Точность = " << fabs(xn) << endl;
+	}
+	cout << "\nx = " << xn << endl; // вывод вычисленного корня
+	cout << "Итераций = " << i << endl;
+}
+
+void main()
+{
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	float a, b, e;
+	int i = 0;
+	cout << "Введите [a;b] : ";
+	cin >> a >> b;
+	cout << "Введите эпсилон: ";
+	cin >> e;
+	cout << endl;
+	if (f(a)*f(b)>0) // если знаки функции на краях отрезка одинаковые, то здесь нет корня
+		cout << "\nКорня нет! Знаки функции на краях отрезка одинаковые\n";
+	else
+	{
+		Newton(a, b, e);
+	}
+}
