@@ -1,0 +1,202 @@
+#include <iostream>
+#include <stdlib.h>
+#include <windows.h>
+#include <conio.h>
+#include <math.h>
+using namespace std;
+
+class slau {
+	int n; // кол-во уравнений
+	double e; //точность
+	double *t1; //альфа*x0
+	double urav[10][10]; //коэф при переменных
+	double alfa[10][10]; //альфа
+	double *beta; //бета
+	double *svk; //свободные коэф
+	double *X; //x, который ищем
+	double *Xprev; //x из ф - лы поиска приближения
+	int k;
+	int l; //ск знаков после запятой
+public:
+	void vvod(); //инициализация системы и точности
+	void show(); //вывод решения
+	void norm(); //заполнение альфа, бета, 0е приближение
+	void pribl(); //поиск приближений
+	void proizv(); //альфа*x0 из ф - лы поиска приближения
+	double maximum(); //поиск max для определения точности
+	int shod();
+};
+
+void slau::vvod() {
+	cout << "Введите количество переменных\n";
+	cin >> n;
+	beta = new double[n];
+	X = new double[n];
+	svk = new double[n];
+	Xprev = new double[n];
+	k = 1;
+	cout << "Введите коэффициенты при переменных\n";
+	for (int i = 0; i<n; i++)
+		for (int j = 0; j<n; j++)
+			cin >> urav[i][j];
+	cout << "Введите свободные коэффициенты\n";
+	for (int i = 0; i<n; i++)
+		cin >> svk[i];
+	cout << "Введите точность \n";
+	cin >> e;
+	double q;
+	q = e;
+	l = 0;
+	while (q != 1) //считает кол-во знаков после ,
+	{
+		l++;
+		q *= 10;
+	}
+}
+
+void slau::proizv() // альфа*x0 из ф-лы поиска приближения
+{
+	t1 = new double[n];
+	for (int i = 0; i<n; i++)
+		t1[i] = 0;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			t1[i] = t1[i] + alfa[i][j] * Xprev[j];
+		}
+		Xprev[i] = t1[i];
+	}
+
+}
+void slau::norm() //заполнение альфа, бета, 0е приближение
+{
+	for (int i = 0; i<n; i++)
+		for (int j = 0; j<n; j++)
+			if (i == j) alfa[i][j] = 0;
+			else alfa[i][j] = -urav[i][j] / urav[i][i];
+			for (int i = 0; i<n; i++) {
+				beta[i] = svk[i] / urav[i][i];
+				Xprev[i] = beta[i];
+			}
+}
+
+double slau::maximum() //поиск max для определения точности
+{
+	double *temp;
+	temp = new double[n];
+	for (int i = 0; i<n; i++)
+		temp[i] = X[i] - Xprev[i];
+	double max = temp[0];
+	for (int i = 1; i<n; i++)
+		if (temp[i]>max) max = temp[i];
+	return(max);
+}
+void slau::pribl() //поиск приближений
+{
+	int a = shod();
+	if (a == 1)
+	{
+		double m;
+		do {
+
+			k++;
+			proizv();
+			for (int i = 0; i < n; i++)
+			{
+
+				X[i] = beta[i] + t1[i]; //x=бета+(альфа*x)
+			}
+			m = maximum();
+		} while (abs(m) > e);
+	}
+}
+
+void slau::show() //вывод решения
+{
+	int a = shod();
+	if (a == 1)
+	{
+		cout << "Решение уравнения:\n";
+		switch (l) {
+		case 0: {for (int i = 0; i < n; i++)
+			printf("%.0f \n", X[i]);
+			break; }
+		case 1: {for (int i = 0; i < n; i++)
+			printf("%.1f \n", X[i]);
+			break; }
+		case 2: {for (int i = 0; i < n; i++)
+			printf("%.2f\n ", X[i]);
+			break; }
+		case 3: {for (int i = 0; i < n; i++)
+			printf("%.3f \n", X[i]);
+			break; }
+		case 4: {for (int i = 0; i < n; i++)
+			printf("%.4f \n", X[i]);
+			break; }
+		case 5: {for (int i = 0; i < n; i++)
+			printf("%.5f \n", X[i]);
+			break; }
+		case 6: {for (int i = 0; i < n; i++)
+			printf("%.6f \n", X[i]);
+			break; }
+		case 7: {for (int i = 0; i < n; i++)
+			printf("%.7f \n", X[i]);
+			break; }
+		}
+		cout << "Количество итераций=" << k << endl;
+	}
+	else
+		cout << "Норма не сходится -> решений нет!" << endl;
+}
+int slau::shod()
+{
+	double max = 0;
+	double *temp;
+	temp = new double[n];
+	for (int i = 0; i < n; i++)
+	{
+		temp[i] = 0;
+	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			temp[i] = temp[i] + alfa[i][j];
+		}
+		if (temp[i] > max)
+			max = temp[i];
+	}
+	if (max < 1)
+		return 1;
+	else
+	{
+		for (int i = 0; i < n; i++)
+		{
+			temp[i] = 0;
+		}
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < n; j++)
+			{
+				temp[i] = temp[i] + alfa[j][i];
+			}
+			if (temp[i] > max)
+				max = temp[i];
+		}
+		if (max < 1)
+			return 1;
+	}
+
+
+}
+void main() {
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	slau A;
+	A.vvod();
+	A.norm();
+	A.pribl();
+	A.show();
+
+}
