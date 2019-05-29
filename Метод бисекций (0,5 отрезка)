@@ -1,0 +1,50 @@
+#include <iostream>
+#include <cmath>
+#include <windows.h>
+using namespace std;
+float f(float x)
+{
+	return pow(x, 5) - 7 * x + 1;
+}
+void bisection(float a, float b, float e)
+{
+	int i = 0;
+	float c;
+	while ((abs(a - b)) > e)
+	{
+		cout << ++i << " итерация:" << endl;
+		c = (a + b) / 2;
+		cout << "c= " << c << endl;
+		if (f(c) == 0)
+			break;
+		cout << "f(a)*f(c)= " << f(a)*f(c);
+		if (f(a)*f(c) < 0)
+		{
+			cout << " < 0" << endl;
+			b = c;
+			cout << "b= " << b << endl;
+		}
+		else
+		{
+			cout << " > 0" << endl;
+			a = c;
+			cout << "a= " << a << endl;
+		}
+		cout << "Точность = " << abs(a - b) << endl;
+		cout << endl;
+	}
+		cout << "x = " << c << endl;
+		cout << "Итераций = " << i << endl;
+}
+
+void main()
+{
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	float a, b, e;
+	cout << "Введите [a;b] : ";
+	cin >> a >> b; // вводим границы отрезка, на котором будем искать корень
+	cout << "Введите эпсилон: ";
+	cin >> e; // вводим нужную точность вычислений
+	bisection(a, b, e);
+}
