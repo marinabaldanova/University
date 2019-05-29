@@ -1,0 +1,156 @@
+#include "windows.h"
+#include "header.h"
+#include "iostream"
+using namespace std;
+void main()
+{
+SetConsoleCP(1251);
+SetConsoleOutputCP(1251);
+int o;
+list <int> ob1;
+int a,b;
+list <float> ob2;
+float c,d;
+list <char> ob3;
+char e,f;
+for(;;)
+{
+	cout <<"Ваши действия:\n1 - добавить элемент в начало списка\n2 - просмотреть элементы\n3 - удалить элемент в конце списка\n4 - поиск элемента, следующего за заданным\n5 - выход\n"<< endl;
+	cin >> o; cout << endl;
+	switch(o)
+	{
+	case 1:
+		cout << "Введите элемент int: ";
+		cin >> a;
+		cout << "Введите элемент float: ";
+		cin >> c;
+		cout << "Введите элемент char: ";
+		cin >> e;
+		ob1.add(a);
+		ob2.add(c);
+		ob3.add(e); cout << endl; break;
+	case 2:
+		ob1.show(); cout <<endl;
+		ob2.show(); cout <<endl;
+		ob3.show(); cout <<"\n\n"; break;
+	case 3:
+		ob1.del();
+		ob2.del();
+		ob3.del(); cout <<"\n"; break;
+	case 4:
+		cout << "Введите элемент для int: ";
+		cin >> b;
+		cout << "Введите элемент для float: ";
+		cin >> d;
+		cout << "Введите элемент для char: ";
+		cin >> f; cout << endl;
+		ob1.search(b); cout <<endl;
+		ob2.search(d); cout <<endl;
+		ob3.search(f); cout <<"\n\n"; break;
+	case 5:
+		exit(0);
+	}
+}
+}
+
+//ЗАГОЛОВОЧНЫЙ
+header.h 
+#include "iostream"
+using namespace std;
+template <class X> class list
+{
+	struct str {
+	X n;
+	str *next;
+};
+	str* head;
+public:
+	list(){head = NULL; }
+	~list (){};
+	void add (X &x)
+	{
+		str* temp = new str;
+		temp->n = x;
+		temp->next = head;
+		head = temp;
+	}
+	void del ()
+	{
+		if (head == NULL)
+		{
+			cout << "Список пуст" << endl;
+		}
+		else
+		{
+			str* temp = head;
+			if (temp->next == NULL)
+			{
+				delete temp;
+				temp = NULL;
+				head = temp;
+			}
+			else
+			{
+			while (temp->next->next != NULL)
+			{
+				temp = temp->next;
+			}
+			delete temp->next;
+			temp->next = NULL;
+			}
+			cout << "Элементы удалены" << endl;
+		}
+	}
+	void search(X &x)
+	{
+		if (head == NULL)
+		{
+			cout << "Список пуст";
+		}
+		else
+		{
+			str* temp = head;
+			while (temp != NULL)
+			{
+			if (temp->n == x)
+			{
+				if (temp->next == NULL)
+				{
+					cout << "Это последний элемент"; break;
+				}
+				else
+				{
+					cout << temp->next->n; break;
+				}
+			}
+			else
+			{
+				if ((temp->next == NULL) && (temp->n != x))
+				{
+					cout << "Такого элемента нет"; break;
+				}
+				else
+				{
+				temp = temp->next;
+				}
+			}
+			}
+		}
+	}
+	void show()
+	{
+		if (head == NULL)
+		{
+			cout << "Список пуст";
+		}
+		else
+		{
+		str* temp = head;
+		while (temp != NULL)
+		{
+			cout << temp->n << "; ";
+			temp = temp->next;
+		}
+		}
+	}
+}; 
