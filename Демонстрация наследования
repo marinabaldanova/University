@@ -1,0 +1,64 @@
+#include "iostream"
+#include "windows.h"
+using namespace std;
+class B1{
+int a;
+public:
+	B1(int x) { a=x; }
+	~B1() {}
+	void show_B1() { cout<<"B1 = "<< a << "\n"; }
+};
+class B2{
+int b;
+public:
+	B2(int x) { b=x; }
+	~B2() {}
+	void show_B2() { cout<<"B2 = "<< b << "\n"; }
+	virtual void showV_B2() { cout << "virt B2 = "<< b <<"\n";}
+};
+class D1: private B1, public B2 {
+int c;
+public:
+	D1(int x, int y, int z) : B2(y), B1(z) { c=x;};
+	~D1() {}
+	void show_D1() { cout<< "D1 = "<< c << "\n"; show_B2();show_B1();}
+	void showV_B2() { cout<< "virt D1 = "<< c << "\n";}
+};
+class D2: public D1{
+int d;
+public:
+	D2(int x, int y, int z, int f) : D1(y, z, f) { d=x;};
+	~D2() {}
+	void show_D2() { cout<<"D2 = "<< d << "\n"; show_D1();}
+	void showV_B2() { cout<< "virt D2 = "<< d << "\n";}
+};
+class D3: private D1 {
+int e;
+public:
+	D3(int x, int y, int z, int f) : D1(y, z, f) { e=x;};
+	~D3() {}
+	void show_D3() { cout<<"D3 = "<< e << "\n"; show_D1();}
+};
+void main()
+{
+	SetConsoleCP (1251);
+	SetConsoleOutputCP (1251);
+	B1 ob_b1(1);
+	B2 ob_b2(2);
+	D1 ob_d1(3,4,5);
+	D2 ob_d2(6,7,8,9);
+	D3 ob_d3(10,11,12,13);
+	ob_b1.show_B1();
+	ob_b2.show_B2();
+	cout << "Следуя иерархии D1:\n";
+	ob_d1.show_D1();
+	cout << "Следуя иерархии D2:\n";
+	ob_d2.show_D2();
+	cout << "Следуя иерархии D3:\n";
+	ob_d3.show_D3();
+	B2* ob;
+	ob=&ob_d1;
+	ob->showV_B2();
+	ob=&ob_d2;
+	ob->showV_B2();
+}
