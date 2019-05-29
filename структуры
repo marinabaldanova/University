@@ -1,0 +1,72 @@
+#include<stdio.h>
+#include<string.h>
+#include<windows.h>
+#define n 3
+struct exams
+{
+char disc[3], fam[20], fak[4], gr[5], data[10];
+int kurs, oc, num;
+};
+void func(int m);
+void main()
+{
+SetConsoleCP(1251);
+SetConsoleOutputCP(1251);
+struct exams a[n], b[n];
+int i, k = 0;
+FILE *f1, *f2;
+f1 = fopen("input.txt", "w");
+for (i = 0; i < n; i++)
+	{
+		printf("Студент %d:\n", i+1);
+		printf("Дисциплина: ");
+		scanf("%s", a[i].disc);
+		printf("Дата сдачи экзамена (ГГГГ/ММ/ДД): ");
+		scanf("%s", &a[i].data);
+		printf("Фамилия: ");
+		scanf("%s", a[i].fam);
+		printf("Факультет: ");
+		scanf("%s", a[i].fak);
+		printf("Курс: ");
+		scanf("%d", &a[i].kurs);
+		printf("Группа: ");
+		scanf("%s", a[i].gr);
+		printf("Номер в журнале: ");
+		scanf("%d", &a[i].num);
+		printf("Оценка: ");
+		scanf("%d", &a[i].oc);
+		printf("\n");
+		fwrite(&a[i], sizeof(struct exams), 1, f1);
+	}
+fclose(f1);
+f1 = fopen("input.txt", "r");
+for (int i = 0; i < n; i++)
+{fread(&b[i], sizeof(struct exams), 1, f1);}
+fclose(f1);
+f2 = fopen("output.txt", "w");
+for (int i = 0; i < n; i++)
+	{
+		if (strcmp(b[i].disc, "П") == 0 && strcmp(b[i].fak, "ЭФ") == 0 && b[i].kurs == 1 && (strncmp(b[i].data, "2012/01", 7) == 0 || 
+			strncmp(b[i].data, "2012/02", 7) == 0 || strncmp(b[i].data, "2012/12", 7) == 0) && b[i].oc == 2)
+		{
+			fprintf(f2, "Группа:%s ", b[i].gr);
+			fprintf(f2, "Номер в журнале:%d\n", b[i].num);
+			k++;
+		}
+	}
+fclose(f2);
+func(k);
+}
+void func(int m)
+{
+int i;
+char s[50];
+FILE *f2;
+f2 = fopen("output.txt", "r");
+for (i = 0; i < m; i++)
+	{
+		fgets(s, 50, f2);
+		puts(s);
+	}
+fclose(f2);
+}
