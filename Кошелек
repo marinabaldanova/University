@@ -1,0 +1,62 @@
+#include "iostream"
+#include "windows.h"
+using namespace std;
+class wallet {
+	float money;
+	static int k;
+public:
+	void get (float x);
+	void set (float x);
+	void show ();
+	friend void showstatic (wallet x);
+	wallet()
+	{
+		money=0;
+		k++;
+	}
+	~wallet() 
+	{
+		cout << "Работает деструктор" << endl;
+	}
+};
+int wallet::k;
+inline void wallet:: get(float x)
+{
+	if (money == 0)
+	{
+		cout << "Кошелек пуст!" << endl;
+	}
+	else
+	{
+		money -= x;
+	}
+}
+inline void wallet:: set(float x)
+{
+	money += x;
+}
+inline void wallet :: show()
+{
+	if (money == 0)
+	{
+		cout << "Кошелек пуст" <<endl;
+	}
+	else
+	{
+		cout << "Кол-во денег: " << money <<endl;
+	}
+}
+void showstatic (wallet x)
+{
+	cout << "Кол-во объектов: " << x.k <<endl;
+}
+void main ()
+{
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	wallet wt;
+	wt.set (500);
+	wt.get (200);
+	wt.show();
+	showstatic(wt);
+}
