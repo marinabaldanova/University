@@ -30,10 +30,10 @@ int main()
 		x = xNext;
 		xNext = Equation(x);
 		++nIter;
-		cout << "x = " << x << " xNext = " << x << " èòåðàöèÿ " << nIter << endl;
+		cout << "x = " << x << " xNext = " << x << " Ã¨Ã²Ã¥Ã°Ã Ã¶Ã¨Ã¿ " << nIter << endl;
 		/*printf("%.5g %.5g %d\n", x, xNext, nIter);*/
 	}
-	cout << "Êîðåíü óð-ÿ = " << xNext << " ñ ïîãðåøíîñòüþ = " << eps << " ïðè ÷èñëå èòåðàöèé = " << nIter << endl;
+	cout << "ÃŠÃ®Ã°Ã¥Ã­Ã¼ Ã³Ã°-Ã¿ = " << xNext << " Ã± Ã¯Ã®Ã£Ã°Ã¥Ã¸Ã­Ã®Ã±Ã²Ã¼Ã¾ = " << eps << " Ã¯Ã°Ã¨ Ã·Ã¨Ã±Ã«Ã¥ Ã¨Ã²Ã¥Ã°Ã Ã¶Ã¨Ã© = " << nIter << endl;
 	/*printf("The root %.5g has been reached to within %.5g after %d iterations.\n",xNext, eps, nIter);*/
 
 	return 0;
