@@ -1,0 +1,74 @@
+#include "iostream"
+#include "cstring"
+#include "fstream"
+#include"windows.h"
+using namespace std;
+class String
+{
+		enum { Size = 256 };
+		char str[Size];
+	public:
+		String () { str[0]='\0'; }
+		String (char s[]) { strcpy(str, s); }
+		void display () { cout << str << endl;; }
+		void concat (String s2) 
+		{
+			if (strlen(str) + strlen (s2.str) < Size)
+				strcat(str, s2.str);
+			else
+				cout << "\n  переполнение";
+		}
+		void cipher()
+		{
+			for (int i=0; i<strlen(str); i++)
+			{
+
+				str[i] >>= 1;
+			}
+		}
+		void anticipher()
+		{
+			for (int i=0; i<strlen(str); i++)
+			{
+
+				str[i] <<= 1;
+			}
+		}
+		void set()
+		{
+			gets(str);
+		}
+		void write()
+		{
+			ofstream f1("Text.txt");
+			f1 << str << endl;
+			f1.close();
+		}
+		void read()
+		{
+			ifstream f2("Text.txt");
+			char ch;
+			 while (f2.get(ch))
+			 {
+				 cout << ch;
+			 }
+			f2.close();
+		}
+};
+void main ()
+{
+SetConsoleCP(1251);
+SetConsoleOutputCP(1251);
+String a;
+cout << "Исходный:" << endl;
+a.set();
+cout << "Зашифрованный:" << endl;
+a.cipher();
+a.display();
+a.write();
+cout << "Считанный с файла:" << endl;
+a.read();
+cout << "Расшифрованный:" << endl;
+a.anticipher();
+a.display();
+}
