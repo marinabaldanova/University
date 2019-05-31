@@ -2,8 +2,8 @@
 #include "windows.h"
 using namespace std;
 class wallet {
-	float money;
-	static int k;
+	float money;    //переменная деньги
+	static int k; 	//счетчик
 public:
 	void get (float x);
 	void set (float x);
