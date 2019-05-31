@@ -1,13 +1,13 @@
 #include "iostream"
 #include "windows.h"
 using namespace std;
-class wallet {
+class wallet { 			//создание класса кошелек
 	float money;
 	static int k;
 public:
-	void get (float x);
-	void set (float x);
-	void show ();
+	void get (float x);	//метод "взять деньги с К"
+	void set (float x);	//метод "положить деньги в К"
+	void show ();		//просмотреть содержимое К
 	friend void showstatic (wallet x);
 	wallet()
 	{
